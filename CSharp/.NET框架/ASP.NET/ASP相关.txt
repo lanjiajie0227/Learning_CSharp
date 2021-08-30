@@ -1,0 +1,28 @@
+﻿//一个 HTTP 终结点：
+        //是 Web 应用程序中可定向的 URL，如 https://localhost:5001/HelloWorld 。
+        //结合以下内容：
+        //所用的协议： HTTPS 。DESKTOP-6B9PHRD\蓝家杰
+        //Web 服务器的网络位置，包括 TCP 端口： localhost:5001 。
+        //目标 URI： HelloWorld 。
+        //控制器中的每个 public 方法均可作为 HTTP 终结点调用
+        public string Index()  
+        {
+            return "This is my default action";
+        }
+        public string Welcome()
+        {
+            return "This is the Welcome action method...";
+        } 
+
+
+MVC设计模式：视图和控制器均依赖于模型。 但是，模型既不依赖于视图，也不依赖于控制器。
+控制器不应由于责任过多而变得过于复杂。 要阻止控制器逻辑变得过于复杂，请将业务逻辑推出控制器并推入域模型。
+如果发现控制器操作经常执行相同类型的操作，可将这些常见操作移入筛选器。
+
+模型 (M)：表示应用数据的类。 模型类使用验证逻辑来对该数据强制实施业务规则。 通常，模型对象检索
+模型状态并将其存储在数据库中。 本教程中， Movie 模型将从数据库中检索电影数据，并将其提供给视图
+或对其进行更新。 更新后的数据将写入到数据库。
+
+id = UrlParameter.Optional  表示路由过程中使用的可选参数
+使用 HtmlEncoder.Default.Encode   防止恶意输入（即 JavaScript）损害应用
+

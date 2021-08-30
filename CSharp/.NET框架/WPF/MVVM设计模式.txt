@@ -1,0 +1,46 @@
+﻿MVVM模式：- Model（WPF界面需要的数据,例如属性值）xxxModel.cs
+         - View（使用Xaml描述语言编写的页面，WPF界面）xxxWindow.xaml
+         - ViewModel（负责的数据处理和逻辑代码存放处）xxxViewModel.cs
+
+
+一般情况下，一个View对应一个ViewModel和一个Model。
+
+
+
+跟View相关的cs文件代码，需要加入 this.DataContext = new MainViewModel();
+
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using ToDoApp.ViewModel;
+
+namespace ToDoApp
+{
+    /// <summary>
+    /// MainWindow.xaml 的交互逻辑
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+            this.MouseDown += (sender, e) =>
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                    this.DragMove();
+            };
+
+            this.DataContext = new MainViewModel();
+        }
+    }
+}
+
+View和ViewModel的交互是通过DataContext这一对象来完成的
+
+在View里面，存在着大量的绑定语句。
+ViewModel里面定义了大量的依赖属性。
+当这些属性改变时，它们会触发一个属性更改的通知事件。
+RaisePropertyChanged();为属性改变响应事件

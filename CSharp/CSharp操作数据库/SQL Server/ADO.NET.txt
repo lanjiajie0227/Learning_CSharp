@@ -1,0 +1,79 @@
+﻿1、数据库连接
+App.config 或者 Web.config里添加
+
+<!--数据库连接配置-->
+  <connectionStrings>
+    <add name="ConnectToSql" connectionString="Data Source = localhost;User ID = sa;Password = XXXXXXXX;          Initial Catalog = DatabaseName;" providerName="System.Data.SqlClient"/>
+  </connectionStrings>
+
+  获取配置文件中的数据库连接配置信息
+  string connectString = ConfigurationManager.ConnectionStrings["ConnectToSql"].ConnectionString;
+
+
+2、SqlDBHelper工具类
+3、SqlParameter类
+
+4、DataAdapter、DataTable、DataSet、DataRead
+
+ADO.NET(数据库访问技术)
+ 
+【ADO.net结构】：
+　　ADO.NET用于访问和操作数据库的两个主要组件是：.NET Framework 数据提供程序和DataSet。
+　　　　a、.NET Framework数据提供程序：是专门为数据操作设计的组件，用于处理不同的数据源，支持访问特定的数据库、执行SQL命令和检索结果。
+　　　　b、.NET Framework数据提供程序包含4个核心对象：
+　　　　　   Connection：(连接)建立与特定数据源的连接；
+　　　　　   Command:(命令)对数据源执行命令；
+　　　　　   DataReader:( 数据读取)从数据源中读取只进<只能前进不能后退>只读<只能读取>的数据流；
+　　　　　   DataAdapter:(数据适配器)使用数据源填充DataSet并解决更新。
+　　【注意】：由于数据源不同，上面4个对象分别针对不同的数据源在.NET Framework数据提供程序中有不同的实现。
+　　　　SQL Server数据库需要使用”System.Data.SqlClient命名空间“，
+　　　　　　　　　核心对象分别为：SqlConnection、SqlCommand、SqlDataReader、SqlDataAdapter;
+　　　　Access数据库需要使用”System.Data.OleDb命名空间“，
+　　　　　　　　　核心对象分别为：OleDbConnection、OleDbCommand、OleDbDataReader、OleDbDataAdapter;
+　　　　c、DataSet:专门为独立于所有数据源的数据访问而设计的，它在支持ADO.NET中的断开式、分布式数据方案中起着至关重要的作用。
+　　　　　　　　DataSet包含一个或多个DataTable对象的集合，这些对象由数据行、数据列以及有关DataTable对象中的数据主键、外键、约束和关系信息组成。
+
+【操作数据库的方法】：
+　　1、使用Connection、Command和DataReader对象实现非断开式访问数据库。
+　　　　⑴、更新数据或读取单个数据操作：
+　　　　　　a、创建Connection对象并打开连接；
+　　　　　　b、创建Command对象；
+　　　　　　c、执行相应命令；
+　　　　　　d、关闭数据库连接。
+　　　　⑵、读取多个数据操作：
+　　　　　　a、创建Connection对象并打开连接；
+　　　　　　b、创建Command对象；
+　　　　　　c、执行相应命令，获取DataReader对象；
+　　　　　　d、使用DataReader对象读取数据；
+　　　　　　e、关闭DataRrader对象；
+　　　　　　f、关闭数据库连接。
+　　2、使用Connection、DataAdapter和DataSet对象实现断开式访问数据库。
+　　　　a、创建Connection对象、DataReader对象和DataSet对象；
+　　　　b、使用DataAdapter对象将数据库中所请求的数据填充到DataSet对象中；
+　　　　c、更新DataSet对象中的数据；
+　　　　d、使用DataAdapter对象将DataSet对象中的数据回传到数据库中。
+
+【ADO.NET中的核心对象】：Conneciton对象、Command对象和DataReader对象。
+　　a、Coneciton对象用于连接数据库，是在应用程序和数据库之间建立一条数据传输通道，只有创建并打开连接，应用程序才能操作数据库中的数据.
+　　b、Command对象用于执行对数据库中的数据进行增、删、改、查的命令。在操作的过程中，必须保持应用程序和数据库之间的连接。
+　　c、DataReader对象提供了一个只进只读的数据读取器，用于从查询结果中读取数据，它每次仅能读取一行数据。
+【全步骤】：
+　　1、创建Connection对象；
+　　　　【语法】：SqlConnection  连接对象名=new SqlConnection(连接字符串);
+　　2、打开数据库连接；
+　　　　【语法】：连接对象名.Open();
+　　3、定义需要执行的T-SQL语句；（定义String类型的字符串用于保存需要执行的T-SQL语句）
+　　4、创建Command对象；
+　　　　【语句】：SqlCommand 命令对象名=new SqlCommand("T-SQL语句"，Connection对象);
+　　5、执行命令，获得DataReader对象；
+　　　　【语句】：SqlDataReader  读取器对象名=命令对象.command.ExecuteReader();
+　　6、使用循环，逐行读取数据；（Read方法具有bool类型的返回值。若能读取到数据，则返回true，否则返回false.）
+　　　　【语句】：while(读取器对象名.Read())
+　　　　　　　　　{
+　　　　　　　　　}
+　　7、获取当前行中的某一列数据；(可以使用索引或列名来获取当前的某一行数据，索引从0开始，且获取数据时需要进行显式类型转换。)
+　　　　【语句】：读取器对象名[索引或列名];
+　　8、关闭DataRead对象；（数据读取完毕必须关闭DataReader对象，因为在读取数据时，DataReader对象将独占连接，此时，就无法使用当前连接对象执行其他操作。）
+　　　　【语句】：读取器对象名.Close();
+　　9、关闭连接对象。
+　　　　【语法】：连接对象名.Close();
