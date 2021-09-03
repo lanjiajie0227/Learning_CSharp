@@ -77,3 +77,17 @@ ADO.NET(数据库访问技术)
 　　　　【语句】：读取器对象名.Close();
 　　9、关闭连接对象。
 　　　　【语法】：连接对象名.Close();
+
+
+实际运用分两种情况：
+
+1、对于Insert、Update、Delete等单项操作：
+1）用Connection.Open打开数据库
+2）用DataAdapter.Command或者Command.Execute执行命令
+3）关闭数据库Connection.Close或者using自动关闭
+
+2、对于Select的双向操作
+1）用Connection.Open建立连接
+2）用DataAdapter.SelectCommand执行命令
+3）数据库数据通过DataAdapter.Fill填充DataSet供应用程序使用
+4）关闭数据库Connection.Close或者using自动关闭

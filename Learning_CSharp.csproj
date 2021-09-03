@@ -37,14 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CSharp\CSharpWebApi\" />
-    <Folder Include="CSharp\CSharp数据结构\ArrayList\" />
-    <Folder Include="CSharp\CSharp数据结构\Array\" />
-    <Folder Include="CSharp\CSharp数据结构\Dictionary\" />
-    <Folder Include="CSharp\CSharp数据结构\HashTable\" />
-    <Folder Include="CSharp\CSharp数据结构\LinkedList\" />
-    <Folder Include="CSharp\CSharp数据结构\List\" />
-    <Folder Include="CSharp\CSharp数据结构\Queue\" />
-    <Folder Include="CSharp\CSharp数据结构\Stack\" />
     <Folder Include="CSharp\CSharp高级\事件\" />
     <Folder Include="CSharp\CSharp高级\多线程\" />
     <Folder Include="CSharp\CSharp高级\委托\" />
@@ -58,9 +50,11 @@
     <Content Include="CSharp\CSharp基础语法\数据类型.txt" />
     <Content Include="CSharp\CSharp操作数据库\MySQL\连接MySQL.txt" />
     <Content Include="CSharp\CSharp操作数据库\SQL Server\ADO.NET.txt" />
+    <Content Include="CSharp\CSharp数据结构\DataStruct.txt" />
     <Content Include="CSharp\CSharp设计模式\单例模式\单例模式.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSharp\CSharp操作数据库\SqlHelper.cs" />
     <Compile Include="CSharp\LeetCode算法\TwoSumSolution.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
