@@ -1,0 +1,496 @@
+﻿一、委托可以将一个方法作为另一个方法的参数
+
+委托 GreetingDelegate 出现的位置与 string 相同，
+string 是一个类型，那么 GreetingDelegate 应该也是一个类型，
+或者叫类(Class)。但是委托的声明方式和类却完全不同，
+实际上，委托在编译的时候确实会编译成类。
+因为 Delegate 是一个类，所以在任何可以声明类的地方都可以声明委托。
+
+//例子
+public delegate void GreetingDelegate(string name);
+ 
+class Program
+{
+    private static void EnglishGreeting(string name)
+    {
+        Console.WriteLine("Good Morning, " + name);
+    }
+ 
+    private static void ChineseGreeting(string name)
+    {
+        Console.WriteLine("早上好, " + name);
+    }
+ 
+    private static void GreetPeople(string name, GreetingDelegate MakeGreeting)
+    {
+        MakeGreeting(name);
+    }
+ 
+    static void Main(string[] args)
+    {
+        GreetPeople("Liker", EnglishGreeting);
+        GreetPeople("李志中", ChineseGreeting);
+        Console.ReadLine();
+    }
+}
+
+委托是一个类，它定义了方法的类型，使得可以将方法当作另一个方法的参数来进行传递，
+这种将方法动态地赋给参数的做法，可以避免在程序中大量使用If … Else(Switch)语句，
+同时使得程序具有更好的可扩展性。
+
+
+二、将方法绑定到委托
+
+static void Main(string[] args)
+{
+    GreetingDelegate delegate1, delegate2;
+    delegate1 = EnglishGreeting;
+    delegate2 = ChineseGreeting;
+    GreetPeople("Liker", delegate1);
+    GreetPeople("李志中", delegate2);
+    Console.ReadLine();
+}
+
+委托不同于 string 的一个特性：可以将多个方法赋给同一个委托，
+或者叫将多个方法绑定到同一个委托，当调用这个委托的时候，将依次调用其所绑定的方法。
+
+static void Main(string[] args)
+{
+    GreetingDelegate delegate1;
+    delegate1 = EnglishGreeting; 
+    delegate1 += ChineseGreeting;
+    GreetPeople("Liker", delegate1);
+    Console.ReadLine();
+}
+
+注意这里，第一次用的“=”，是赋值的语法；
+第二次，用的是“+=”，是绑定的语法。
+如果第一次就使用“+=”，将出现“使用了未赋值的局部变量”的编译错误。
+
+也可以使用下面的代码来这样简化这一过程：
+
+GreetingDelegate delegate1 = new GreetingDelegate(EnglishGreeting);
+delegate1 += ChineseGreeting;
+
+既然给委托可以绑定一个方法，那么也应该有办法取消对方法的绑定，这个语法是“-=”：
+
+static void Main(string[] args)
+{
+    GreetingDelegate delegate1 = new GreetingDelegate(EnglishGreeting);
+    delegate1 += ChineseGreeting;
+    GreetPeople("Liker", delegate1);
+    Console.WriteLine();
+    
+    delegate1 -= EnglishGreeting;
+    GreetPeople("李志中", delegate1);
+    Console.ReadLine();
+}
+
+使用委托可以将多个方法绑定到同一个委托变量，
+当调用此变量时(这里用“调用”这个词，是因为此变量代表一个方法)，
+可以依次调用所有绑定的方法。
+
+
+
+using System;
+
+namespace LeetCodeTraining
+{
+    public delegate void GreetingDelegate(string name);
+    class Program
+    {
+        private static void EnglishGreeting(string name)
+        {
+            Console.WriteLine("Good Morning，" + name);
+        }
+        private static void ChineseGreeting(string name)
+        {
+            Console.WriteLine("早上好，" + name);
+        }
+        private static void GreetPeople(string name, GreetingDelegate MakeGreeting)
+        {
+            MakeGreeting(name);
+        }
+
+        static void Main(string[] args)
+        {
+            //GreetingDelegate delegate1, delegate2;
+            //delegate1 = EnglishGreeting;
+            //delegate2 = ChineseGreeting;
+            //GreetingDelegate delegate1;
+            //delegate1 = EnglishGreeting;
+            //delegate1 += ChineseGreeting;
+            //delegate1("Liker");
+            //GreetPeople("Liker", delegate1);
+            //GreetPeople("梨花", delegate2);
+
+            GreetingDelegate delegate1 = new GreetingDelegate(EnglishGreeting);
+            delegate1 += ChineseGreeting;
+            GreetPeople("Liker", delegate1);
+            Console.WriteLine();
+
+            delegate1 -= EnglishGreeting;
+            GreetPeople("梨花", delegate1);
+            Console.ReadLine();
+        }
+    }
+}
+
+
+
+三、委托的编译代码
+
+尽管在GreetingManager 里将 MakeGreet 声明为public，
+但是，实际上MakeGreet 会被编译成私有字段，难怪会发生上面的编译错误了，
+因为它根本就不允许在GreetingManager 类的外面以赋值的方式访问。
+
+MakeGreet 所产生的代码：
+
+// ************************************************************************
+
+private GreetingDelegate MakeGreet; //对事件的声明实际是声明一个私有的委托变量
+
+[MethodImpl(MethodImplOptions.Synchronized)]
+
+public void add_MakeGreet(GreetingDelegate value)
+
+{
+
+this.MakeGreet = (GreetingDelegate) Delegate.Combine(this.MakeGreet, value);
+
+}
+
+[MethodImpl(MethodImplOptions.Synchronized)]
+
+public void remove_MakeGreet(GreetingDelegate value)
+
+{
+
+this.MakeGreet = (GreetingDelegate) Delegate.Remove(this.MakeGreet, value);
+
+}
+
+// ************************************************************************
+
+MakeGreet 事件确实是一个GreetingDelegate 类型的委托，
+不管是不是声明为public，它总是被声明为private。
+另外，它还有两个方法，分别是add_MakeGreet和remove_MakeGreet，
+这两个方法分别用于注册委托类型的方法和取消注册。
+实际上也就是：“+= ”对应 add_MakeGreet，
+“-=”对应remove_MakeGreet。
+而这两个方法的访问限制取决于声明事件时的访问限制符。
+
+在add_MakeGreet()方法内部，实际上调用了System.Delegate 的Combine()静态方法，
+这个方法用于将当前的变量添加到委托链表中。
+
+委托实际上是一个类，在定义委托的时候：
+
+// ************************************************************************
+
+public delegate void GreetingDelegate(string name);
+
+// ************************************************************************
+
+当编译器遇到这段代码的时候，会生成下面这样一个完整的类：
+
+// ************************************************************************
+
+public class GreetingDelegate:System.MulticastDelegate
+
+{
+
+public GreetingDelegate(object @object, IntPtr method);
+
+public virtual IAsyncResult BeginInvoke(string name, AsyncCallback callback, object @object);
+
+public virtual void EndInvoke(IAsyncResult result);
+
+public virtual void Invoke(string name);
+
+}
+
+// ************************************************************************
+
+
+
+四、委托进阶
+
+为什么委托定义的返回值通常都为 void ？
+
+尽管并非必需，但是我们发现很多的委托定义返回值都为 void，为什么呢？
+这是因为委托变量可以供多个订阅者注册，
+如果定义了返回值，那么多个订阅者的方法都会向发布者返回数值，
+结果就是后面一个返回的方法值将前面的返回值覆盖掉了，
+因此，实际上只能获得最后一个方法调用的返回值。
+可以运行下面的代码测试一下。除此以外，发布者和订阅者是松耦合的，
+发布者根本不关心谁订阅了它的事件、为什么要订阅，更别说订阅者的返回值了，
+所以返回订阅者的方法返回值大多数情况下根本没有必要。
+
+ 如何让事件只允许一个客户订阅？
+ 将事件声明为private 的，然后提供两个方法来进行注册和取消注册：
+
+public class Publishser
+{
+ 
+    private event GeneralEventHandler NumberChanged; // 声明一个私有事件
+ 
+    // 注册事件
+    public void Register(GeneralEventHandler method)
+    {
+        NumberChanged = method;
+    }
+    
+    // 取消注册
+    public void UnRegister(GeneralEventHandler method)
+    {
+        NumberChanged -= method;
+    }
+ 
+    public void DoSomething()
+    {
+        // 做某些其余的事情
+        if (NumberChanged != null)
+        { // 触发事件
+            string rtn = NumberChanged();
+            Console.WriteLine("Return: {0}", rtn); // 打印返回的字符串，输出为Subscriber3
+        }
+    }
+}
+
+在UnRegister()中，没有进行任何判断就使用了NumberChanged -= method 语句。
+这是因为即使method 方法没有进行过注册，此行语句也不会有任何问题，不会抛出异常，
+仅仅是不会产生任何效果而已。
+注意在Register()方法中，我们使用了赋值操作符“=”，而非“+=”，通过这种方式就避免了多个方法注册。
+
+
+
+五、委托和方法的异步调用
+
+通常情况下，如果需要异步执行一个耗时的操作，
+我们会新起一个线程，然后让这个线程去执行代码。
+但是对于每一个异步调用都通过创建线程来进行操作显然会对性能产生一定的影响，同时操作也相对繁琐一些。
+
+.NET 中可以通过委托进行方法的异步调用，
+就是说客户端在异步调用方法时，本身并不会因为方法的调用而中断，
+而是从线程池中抓取一个线程去执行该方法，
+自身线程（主线程）在完成抓取线程这一过程之后，继续执行下面的代码，
+这样就实现了代码的并行执行。
+使用线程池的好处就是避免了频繁进行异步调用时创建、销毁线程的开销。
+当我们在委托对象上调用BeginInvoke()时，便进行了一个异步的方法调用。
+
+事件发布者和订阅者之间往往是松耦合的，发布者通常不需要获得订阅者方法执行的情况；
+而当使用异步调用时，更多情况下是为了提升系统的性能，而并非专用于事件的发布和订阅这一编程模型。
+而在这种情况下使用异步编程时，就需要进行更多的控制，
+比如当异步执行方法的方法结束时通知客户端、返回异步执行方法的返回值等。
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Client application started!\n");
+        Thread.CurrentThread.Name = "Main Thread";
+        Calculator cal = new Calculator();
+        int result = cal.Add(2, 5);
+        Console.WriteLine("Result: {0}\n", result);
+ 
+        // 做某些其它的事情，模拟需要执行3 秒钟
+        for (int i = 1; i <= 3; i++)
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(i));
+            Console.WriteLine("{0}: Client executed {1} second(s).", Thread.CurrentThread.Name, i);
+        }
+ 
+        Console.WriteLine("\nPress any key to exit...");
+        Console.ReadLine();
+    }
+}
+ 
+public class Calculator
+{
+    public int Add(int x, int y)
+    {
+        if (Thread.CurrentThread.IsThreadPoolThread)
+        {
+            Thread.CurrentThread.Name = "Pool Thread";
+        }
+ 
+        Console.WriteLine("Method invoked!");
+ 
+        // 执行某些事情，模拟需要执行2 秒钟
+        for (int i = 1; i <= 2; i++)
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(i));
+            Console.WriteLine("{0}: Add executed {1} second(s).", Thread.CurrentThread.Name, i);
+        }
+ 
+        Console.WriteLine("Method complete!");
+        return x + y;
+    }
+}
+
+
+\Thread.Sleep()，它会让执行当前代码的线程暂停一段时间（可以理解为使程序的执行暂停一段时间），
+以毫秒为单位，比如Thread.Sleep(1000)，将会使线程暂停1 秒钟。
+使用了它的重载方法，使用TimeSpan.FromSeconds(1)，可读性更好一些。
+
+\Thread.CurrentThread.Name，通过这个属性可以设置、获取执行当前代码的线程的名称，值得注意的是这个属性只可以设置一次，如果设置两次，会抛出异常。
+
+\Thread.IsThreadPoolThread，可以判断执行当前代码的线程是否为线程池中的线程。
+
+线程是串行执行的
+
+BeginInvoke() 方法、EndInvoke() 方法和其相关的 IAysncResult 
+
+BeginInvoke()方法返回了一个实现了IAsyncResult 接口的对象
+（实际上就是一个AsyncResult 类型实例，注意这里IAsyncResult 和AysncResult 是不同的，
+它们均包含在.NET Framework 中）。
+
+AsyncResult 的用途有这么几个：传递参数，它包含了对调用了BeginInvoke()的委托的引用；
+它还包含了BeginInvoke()的最后一个Object 类型的参数；
+它可以鉴别出是哪个方法的哪一次调用，因为通过同一个委托变量可以对同一个方法调用多次。
+
+EndInvoke()方法接受IAsyncResult 类型的对象（以及ref 和out 类型参数，这里不讨论了，
+对它们的处理和返回值类似），所以在调用BeginInvoke()之后，我们需要保留IAsyncResult，
+以便在调用EndInvoke()时进行传递。这里最重要的就是EndInvoke()方法的返回值，它就是方法的返回值。
+除此以外，当客户端调用EndInvoke()时，如果异步调用的方法没有执行完毕，则会中断当前线程而去等待该方法，
+只有当异步方法执行完毕后才会继续执行后面的代码。
+所以在调用完BeginInvoke()后立即执行EndInvoke()是没有任何意义的。
+我们通常在尽可能早的时候调用BeginInvoke()，然后在需要方法的返回值的时候再去调用EndInvoke()，
+或者是根据情况在晚些时候调用。
+
+定义一个AddDelegate 委托，并使用BeginInvoke()方法来异步地调用
+
+using System.Threading;
+using System;
+ 
+public delegate int AddDelegate(int x, int y);
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Client application started!\n");
+        Thread.CurrentThread.Name = "Main Thread";
+        Calculator cal = new Calculator();
+        AddDelegate del = new AddDelegate(cal.Add);
+        IAsyncResult asyncResult = del.BeginInvoke(2, 5, null, null); // 异步调用方法
+ 
+        // 做某些其它的事情，模拟需要执行3 秒钟
+        for (int i = 1; i <= 3; i++)
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(i));
+            Console.WriteLine("{0}: Client executed {1} second(s).", Thread.CurrentThread.Name, i);
+        }
+        int rtn = del.EndInvoke(asyncResult);
+        Console.WriteLine("Result: {0}\n", rtn);
+        Console.WriteLine("\nPress any key to exit...");
+        Console.ReadLine();
+    }
+}
+ 
+public class Calculator
+{
+    public int Add(int x, int y)
+    {
+        if (Thread.CurrentThread.IsThreadPoolThread)
+        {
+            Thread.CurrentThread.Name = "Pool Thread";
+        }
+ 
+        Console.WriteLine("Method invoked!");
+ 
+        // 执行某些事情，模拟需要执行2 秒钟
+        for (int i = 1; i <= 2; i++)
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(i));
+            Console.WriteLine("{0}: Add executed {1} second(s).", Thread.CurrentThread.Name, i);
+        }
+ 
+        Console.WriteLine("Method complete!");
+        return x + y;
+    }
+}
+
+
+BeginInvoke 的另外两个参数分别是AsyncCallback 和Object 类型，其中AsyncCallback 是一个委托类型，
+它用于方法的回调，即是说当异步方法执行完毕时自动进行调用的方法。它的定义为：
+
+// ************************************************************************
+
+public delegate void AsyncCallback(IAsyncResult ar);
+
+// ************************************************************************
+
+Object 类型用于传递任何你想要的数值，它可以通过IAsyncResult 的AsyncState 属性获得。
+
+using System.Threading;
+using System;
+using System.Runtime.Remoting.Messaging;
+ 
+public delegate int AddDelegate(int x, int y);
+ 
+class Program
+{
+ 
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Client application started!\n");
+        Thread.CurrentThread.Name = "Main Thread";
+        Calculator cal = new Calculator();
+        AddDelegate del = new AddDelegate(cal.Add);
+        string data = "Any data you want to pass.";
+ 
+        AsyncCallback callBack = new AsyncCallback(OnAddComplete);
+        del.BeginInvoke(2, 5, callBack, data); // 异步调用方法
+ 
+        // 做某些其它的事情，模拟需要执行3 秒钟
+        for (int i = 1; i <= 3; i++)
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(i));
+            Console.WriteLine("{0}: Client executed {1} second(s).", Thread.CurrentThread.Name, i);
+        }
+        Console.WriteLine("\nPress any key to exit...");
+        Console.ReadLine();
+    }
+ 
+    static void OnAddComplete(IAsyncResult asyncResult)
+    {
+        AsyncResult result = (AsyncResult)asyncResult;
+        AddDelegate del = (AddDelegate)result.AsyncDelegate;
+        string data = (string)asyncResult.AsyncState;
+        int rtn = del.EndInvoke(asyncResult);
+        Console.WriteLine("{0}: Result, {1}; Data: {2}\n", Thread.CurrentThread.Name, rtn, data);
+    }
+}
+ 
+public class Calculator
+{
+    public int Add(int x, int y)
+    {
+        if (Thread.CurrentThread.IsThreadPoolThread)
+        {
+            Thread.CurrentThread.Name = "Pool Thread";
+        }
+ 
+        Console.WriteLine("Method invoked!");
+ 
+        // 执行某些事情，模拟需要执行2 秒钟
+        for (int i = 1; i <= 2; i++)
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(i));
+            Console.WriteLine("{0}: Add executed {1} second(s).", Thread.CurrentThread.Name, i);
+        }
+ 
+        Console.WriteLine("Method complete!");
+        return x + y;
+    }
+}
+
+在调用BeginInvoke()后不再需要保存IAysncResult 了，
+因为AysncCallback 委托将该对象定义在了回调方法的参数列表中；
+
+在OnAddComplete()方法中获得了调用BeginInvoke()时最后一个参数传递的值，
+字符串“Any data you want to pass”；
+
+执行回调方法的线程并非客户端线程Main Thread，
+而是来自线程池中的线程Pool Thread。另外如前面所说，
+在调用EndInvoke()时有可能会抛出异常，所以在应该将它放到try/catch 块中

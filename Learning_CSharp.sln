@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learning_CSharp", "Learning
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeetCodeTraining", "..\LeetCodeTraining\LeetCodeTraining.csproj", "{4249F9D1-DE39-4F43-973D-01977498E396}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventDemo", "..\EventDemo\EventDemo.csproj", "{8DD127EC-6264-46DC-BA6C-B318AC61F827}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelegateAndEvent", "..\DelegateAndEvent\DelegateAndEvent.csproj", "{7F1A0984-0625-4B97-830B-CC49611F40D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{4249F9D1-DE39-4F43-973D-01977498E396}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4249F9D1-DE39-4F43-973D-01977498E396}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4249F9D1-DE39-4F43-973D-01977498E396}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD127EC-6264-46DC-BA6C-B318AC61F827}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD127EC-6264-46DC-BA6C-B318AC61F827}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD127EC-6264-46DC-BA6C-B318AC61F827}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD127EC-6264-46DC-BA6C-B318AC61F827}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F1A0984-0625-4B97-830B-CC49611F40D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F1A0984-0625-4B97-830B-CC49611F40D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F1A0984-0625-4B97-830B-CC49611F40D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F1A0984-0625-4B97-830B-CC49611F40D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

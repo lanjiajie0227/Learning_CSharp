@@ -1,0 +1,123 @@
+﻿一、为了更好的封装性
+
+封装了委托类型的变量，使得：在类的内部，不管你声明它是public还是protected，它总是private 的。
+在类的外部，注册“+=”和注销“-=”的访问限定符与你在声明事件时使用的访问符相同。
+
+面向对象设计，讲究的是对象的封装，既然可以声明委托类型的变量(在上例中是delegate1)，
+可以将这个变量封装到 GreetManager 类中，在这个类的客户端中使用就更方便。
+public class GreetingManager
+{
+    /// <summary>
+    /// 在 GreetingManager 类的内部声明 delegate1 变量
+    /// </summary>
+    public GreetingDelegate delegate1;
+ 
+    public void GreetPeople(string name, GreetingDelegate MakeGreeting)
+    {
+        MakeGreeting(name);
+    }
+}
+
+声明委托的目的就是为了把它暴露在类的客户端进行方法的注册，
+把它声明为 private ，客户端对它根本就不可见。
+
+把delegate1 声明为 public 的结果就是：
+在客户端可以对它进行随意的赋值等操作，严重破坏对象的封装性。
+
+如果delegate1 不是一个委托类型，而是一个string 类型，应该使用属性对字段进行封装。
+
+Event 封装了委托类型的变量，使得：在类的内部，不管你声明它是public还是protected，
+它总是private 的。在类的外部，注册“+=”和注销“-=”的访问限定符与你在声明事件时使用的访问符相同。
+改写GreetingManager 类，它变成了这个样子：
+
+public class GreetingManager
+{
+    //这一次我们在这里声明一个事件
+    public event GreetingDelegate MakeGreet;
+ 
+    public void GreetPeople(string name)
+    {
+        MakeGreet(name);
+    }
+}
+static void Main(string[] args)
+{
+    GreetingManager gm = new GreetingManager();
+    gm.MakeGreet = EnglishGreeting; // 编译错误
+    gm.MakeGreet += ChineseGreeting;
+    gm.GreetPeople("Liker");
+}
+
+事件其实就是：声明一个事件不过类似于声明一个进行了封装的委托类型的变量而已。
+
+//例如
+public delegate void GreetingDelegate(string name);  //先定义一个委托GreetingDelegate
+public event GreetingDelegate MakeGreet;     //再使用委托GreetingDelegate定义一个MakeGreet的事件
+
+//相当于MakeGreet事件把委托变量GreetingDelegate封装起来了
+
+
+
+二、限制类型的能力
+使用事件不仅能获得比委托更好的封装性以外，还能限制含有事件的类型的能力。
+意思是说：事件应该由事件发布者触发，而不应该由事件的客户端（客户程序）来触发。
+
+using System;
+
+namespace EventDemo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Publisher pub = new Publisher();
+            Subscriber sub = new Subscriber();
+            pub.NumberChanged += sub.OnNumberChanged;   //订阅事件
+            pub.DoSomething(); // 应该通过DoSomething()来触发事件
+            //pub.NumberChanged(100); // 但可以被这样直接调用，对委托变量的不恰当使用
+            Console.ReadKey();
+        }
+    }
+
+    ///<summary>
+    ///定义委托
+    ///</summary>
+    ///<param name="count"></param>
+    public delegate void NumberChangedEventHandler(int count);
+
+    ///<summary>
+    ///定义事件发布者
+    ///</summary>
+    public class Publisher
+    {
+        private int count;
+        //public NumberChangedEventHandler NumberChanged;  //声明委托变量
+        public event NumberChangedEventHandler NumberChanged;  //声明事件
+        public void DoSomething()
+        {
+            if (NumberChanged != null)
+            {
+                count++;
+                NumberChanged(count);
+            }
+        }
+    }
+
+    ///<summary>
+    ///定义事件订阅者
+    ///</summary>
+    public class Subscriber
+    {
+        public void OnNumberChanged(int count)
+        {
+            Console.WriteLine("Subscriber notified: count = {0}", count);
+        }
+    }
+}
+
+尽管直接使用委托变量通常不会有什么问题，但它给了客户端不应具有的能力，
+而使用事件，可以限制这一能力，更精确地对类型进行封装。
+
+使用了event 关键字之后，直接在客户端触发事件这种行为，也就是直接调用pub.NumberChanged(100)，是被禁止的。
+
+还有一个约定俗称的规定，就是订阅事件的方法的命名，通常为“On 事件名”，比如这里的OnNumberChanged。

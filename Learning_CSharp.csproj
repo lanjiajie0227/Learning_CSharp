@@ -37,11 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CSharp\CSharpWebApi\" />
-    <Folder Include="CSharp\CSharp高级\事件\" />
-    <Folder Include="CSharp\CSharp高级\多线程\" />
-    <Folder Include="CSharp\CSharp高级\委托\" />
-    <Folder Include="CSharp\CSharp高级\泛型\" />
-    <Folder Include="CSharp\CSharp高级\集合\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CSharp\.NET框架\ASP.NET\ASP相关.txt" />
@@ -52,6 +47,12 @@
     <Content Include="CSharp\CSharp操作数据库\SQL Server\ADO.NET.txt" />
     <Content Include="CSharp\CSharp数据结构\DataStruct.txt" />
     <Content Include="CSharp\CSharp设计模式\单例模式\单例模式.txt" />
+    <Content Include="CSharp\CSharp高级\委托和事件\Delegate_And_Event.txt" />
+    <Content Include="CSharp\CSharp高级\委托和事件\Event.txt" />
+    <Content Include="CSharp\CSharp高级\多线程\Thread.txt" />
+    <Content Include="CSharp\CSharp高级\委托和事件\Delegate.txt" />
+    <Content Include="CSharp\CSharp高级\泛型\Generic.txt" />
+    <Content Include="CSharp\CSharp高级\集合\Collection.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharp\CSharp操作数据库\SqlHelper.cs" />
