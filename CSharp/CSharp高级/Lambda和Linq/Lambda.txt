@@ -1,0 +1,306 @@
+﻿一、Lambd表达式
+1、输入参数
+在Lambda表达式中，输入参数是Lambda运算符的左边部分。它包含参数的数量可以为0、1或者多个。只有当输入参数为1时，Lambda表达式左边的一对小括弧才可以省略。输入参数的数量大于或者等于2时，Lambda表达式左边的一对小括弧中的多个参数质检使用逗号（,）分割。
+
+1）输入参数的个数为0
+()=>Console.WriteLine("This is a Lambda expression.");
+由于上述Lambda表达式的输入参数的数量为0，因此，该Lambda表达式的左边部分的一对小括弧不能被省略。
+
+2）输入参数的个数为1
+m=>m*2;
+上述Lambda表达式的输入参数省略了一对小括弧，它与“(m)=>m*2”Lambda表达式是等效的。
+
+3）输入参数的个数为2
+(m,n)=>m*n;
+输入参数的数量大于或者等于2时，Lambda表达式左边的一对小括弧中的多个参数质检使用逗号（,）分割。
+
+2、表达式或语句块
+多个Lambda表达式可以构成Lambda语句块。语句块可以放到运算符的右边，作为Lambda的主体。根据主题不同，Lambda表达式可以分为表达式Lambda和语句Lambda。语句块中可以包含多条语句，并且可以包含循环、方法调用和if语句等。
+
+1）右边部分是一个表达式。该表达式计算m参数的平方值
+m=>m*n;
+如果Lambda表达式的右边部分是一个语句块，那么该语句块必须被"{"和"}"包围。
+
+2）输入参数包括两个参数：m和n。该表达式的右边包含2个表达式；第一个表达式计算m和n参数的乘积，结果保存为result变量；第二个表达式显示result变量的值。
+(m,n)=>{int result=m*n; Console.WriteLine(result);}
+上述Lambda表达式的右边部分包含2个表达式，因此，该表达式的右边部分必须被"{"和"}"包围。
+
+3、查询表达式
+查询表达式是一种使用查询语法表示的表达式，它用于查询和转换来自任意支持LINQ的数据源中的数据。查询表达式使用许多常见的C#语言构造，易读简洁，容易掌握。它由一组类似于SQL或XQuery的声明性语法编写的子句组成。每一个子句可以包含一个或多个C#表达式。这些C#表达式本身也可能是查询表达式或包含查询表达式。
+
+●查询表达式必须以from子句开头，以select或group子句结束。第一个from子句和最后一个select子句或group子句之间，可以包含一个活多个where子句、let子句、join子   句、orderby子句和group子句，甚至还可以是from子句。它包括8个基本子句，具体说明如下所示。
+
+●from子句：指定查询操作的数据源和范围变量。
+
+●select子句：指定查询结果的类型和表现形式。
+
+●where子句：指定筛选元素的逻辑条件。
+
+●let子句：引入用来临时保存查询表达式中的字表达式结果的范围变量。
+
+●orderby子句：对查询结果进行排序操作，包括升序和降序。
+
+●group子句：对查询结果进行分组。
+
+●into子句：提供一个临时标识符。join子句、group子句或select子句可以通过该标识符引用查询操作中的中坚结果。
+
+●join子句：连接多个用于查询操作的数据源。
+
+1）查询表达式query，该查询表达式查询arr数组中的每一个元素。
+int[]arr =new int[]{0,1,2,3,4,5,6,7,8,9};
+
+var query1=from n in arr
+                select n;
+
+2）下面创建一个查询表达式query2.该查询表达式查询arr数组中大于6的元素。
+int[] arr =new int[]{0,1,2,3,4,5,6,7,8,9};
+var query2=from n in arr
+              where n >6
+              select n;
+变量只是保存查询操作，而不是查询的结果。当查询表达式执行查询操作时，才会计算该查询表达式的结果。以上两个变量的类型都属于集合类型。
+
+
+3.1、from子句
+from子句用来指定查询表达式的数据源和范围变量。它是查询表达式的必有部分，并且它出现在最开始。数据源不但可以包括查询本身的数据源，而且还可以包括子查询的数据源。范围变量用来表示数据源序列中的每一个元素。
+注意：from子句指定的数据源的类型必须为IEnumerable，IEnumerable<T>或一种派生类型。
+
+
+1）查询表达式query。该查询表达式查询arr数组中的每一个元素。在query查询表达式中，arr数组为数据源，n为范围变量。n范围变量的类型arr数据源的元素类型。
+
+int[] arr =new int[] {0,1,2,3,4,5,67,8,9};
+var query =from n in arr
+ select n;
+数据源和包含不同的from子句查询表达式。
+数据源：指定数据的来源，它的形式可以为静态数组、动态数组（Arraylist）、集合、数据集（DataSet）、数据表、MML片段、MML文件等。
+
+如果数据源实现了IEnumerable<T>接口，那么编译器可以推断范围变量的类型为其元素类型。例如：数据源的类型为IEnumerable<UserInfo>,那么可以推断出范围 变量的类型为UseInfo。
+
+2）查询表达式query。该查询表达式查询list反省数组中的每一个元素。在query查询表达式中，list反省数组为数据源。u为范围变量。u范围变量的类型为list数据源的元素类型（UserInfo）。
+
+List<UserInfo> list=...
+var query =from u in list
+           select u;
+如果当数据源是非泛型IEnumerable类型（如ArrayList等）时，需要显示指定范围变量的类型。
+
+3）查询表达式query。该查询表达式查询list数组中的每一个元素。在query查询表达式中，list数组为数据源，u为范围变量。u范围变量的类型被指定为list数据源的元素类型（UserInfo）。
+
+ArrayList list =new ArrayList();
+list.Add(...);
+...
+var query =from UserInfo u in list
+    select u;
+包含单个from子句的查询表达式
+在查询表达式中，from子句至少有一个。当from子句只有一个时，构成的查询表达式被称为包含单个from子句的查询表达式。一般的，包含单个from子句的查询表达式只包含一个数据源。
+
+4）查询表达式query。该查询表达式查询arr数组中的每一个元素，它就是一个包含单个from子句的查询表达式。
+
+int[] arr =new int[]{0,1,12,3,4,5,6,7,8,9};
+var query =from n in arr
+       select n;
+包含多个from子句的查询表达式
+在查询表达式中，当from子句有两个或两个以上时，构成的查询表达式被称为包含多个from子句的查询表达式。
+
+
+5）查询表达式query。该查询表达式包含两个from子句，他们分别查询两个独立的数据源；arr1数组和arr2数组。最后，使用select子句计算当前元素的和。
+int[] arr1= new int[] {0,1,2,3,4,5,6,7,8,9};
+int[] arr2=new int[] {0,1,2,3,4,5,6,7,8,9};
+var query =from a in arr1
+       from b in arr2
+       select a +b;
+包含符合from子句的查询表达式
+在查询表达式中，有可能查询表达式的数据源中的每一个元素本身也作为该查询表达式的数据源。那么要查询数据源中的每一个元素中的元素，则需要使用符合from子句。符合from子句类似于嵌套的foreach语句。
+
+6）创建一个名称为Test的类，该类包含两个字段：Name和AliasName。其中，Name字段的类型为string，AliasName字段的类型为string类型列表。因此，它也可以作为子查询表达式的数据源。
+
+public class Test
+{
+    Public string Name;
+    Public List<string> AliasName;
+}
+
+7）查询表达式query。该查询表达式包含了一个符合from子句：第一个from子句查询list泛型集合；第二个from子句查询list集合中元素的AliasName字段，为第一个from子句的子查询。最后，使用select子句将u变量的Name属性的值和name变量的值拼接为一个字符串。
+
+List<MUserInfo> list =...
+var query =from u in list
+     from name in u.AliasName
+select u.Name+name;
+
+
+3.2、select子句
+select子句用来指定将在执行查询时产生的值的类型。查询表达式必须以select子句或group子句结束。
+1）查询表达式query。该查询表达式查询arr数组中的每一个元素。
+
+int[] arr =new int[] {0,1,2,3,4,5,6,7,8,9};
+var query =from n in arr
+       select n;
+
+2）查询表达式query。该查询表达式查询arr数组中的每一个元素和10的乘积。
+
+int[] arr =new int[] {0,1,2,3,4,5,6,7,8,9};
+var query =from n in arr 
+    select n*10;
+select子句中的“n*10”表达式决定了查询结果的表现形式，即计算每一个元素和10的乘积。
+
+3）查询表达式query。该查询表达式查询arr数组中的每一个元素，查询结果是一个对象的集合对象包含两个属性：ID和Name，它在select子句中由匿名对象初始化器创建。每一个对象的ID属性的值是当前元素的值、Name属性的值为元素的值的字符串的表现形式。
+
+int[] arr =new int[]{0,1,2,3,4,5,6,7,8,9};
+var query =from n in arr 
+    select new
+    {
+         ID=n,
+         Name =n.ToString()
+    };
+
+3.3、where子句
+where子句用来指导将在查询表达式中返回数据源中的哪些元素。它将一个布尔条件应用于数据源中的每个元素，并返回指定条件的元素。查询表达式可以包含一个或多个where子句。
+
+1）查询表达式query。该查询表达式从arr数组中查询小于3的元素
+
+int[] arr =new int[] {0,1,2,3,4,5,6,7,8,9};
+var query =from n in arr
+        where n <3
+        select n;
+上述where子句只包含一个布尔表达式“n<3”，该表达式将筛选小于3的元素。
+
+
+
+在一个where子句中，也可以包含多个布尔表达式，各个表达式直接使用逻辑运算符（如&&和||）分隔。
+
+2）查询表达式query。该查询表达式从arr数组中查询大于3且小于6的元素。
+
+
+int[] arr =new int[]{0,1,2,3,4,5,6,7,8,9};
+var query =from n in arr
+              where n >3 && n<6
+              select n;
+上述where子句包含两个布尔表达式"n>3"和"n<6",它们共同指定将筛选大于3且小于6的元素。这两个布尔表达式使用&&运算符链接，即计算这两个布尔表达式的逻辑与。
+
+
+
+where子句不但可以包含布尔表达式，而且还可以包含返回布尔值的方法。
+
+
+3）查询表达式query。该查询表达式从arr数组中查询为偶数的元素。
+
+int[] arr =new int[]{0,1,2,3,4,5,6,7,8,9};
+private bool IsEven(int i)
+{
+    return i%2==0?true:false;
+}
+var query =from n in arr
+              wehre IsEven(n)
+              select n;
+上述where子句包含一个返回布尔值的方法"IsEven(int i)"。该方法判定元素是否为偶数。如果是，则返回true，否则返回false。
+
+
+3.4、let子句
+let子句用来创建一个新的范围变量，它用于存储子表达式的结果。let子句使用编程者提供的表达式的结果初始化该变量。一旦初始化了该范围变量的值，它就不能用于存储其他的值。
+查询表达式query。该查询表达式从arr数组中查询为偶数的元素。
+int[] arr =new int[]{0,1,2,3,4,5,6,7,8,9};
+var query =from n in arr
+        let isEven =return n%2==0?true:false;
+        where isEven 
+        select n;
+"return n%2==0?true:false"表达式判断n元素是否为偶数。如果是，则返回true，否则返回false。“let isEven =return n%2==0?true:false”表达式使用let子句创建新的范围变量isEven，用来保存"return n%2==0?true:false"表达式的结果。"where isEven"表达式使用where子句筛选isEven的值为true的元素。
+
+3.5、orderby子句
+orderby子句可使返回的查询结果按升序或者降序排序。升序由关键字ascending指定，而降序由关键字descending指定。
+注意：orderby子句默认排序方式为升序。
+
+1）表达式query。该查询表达式从arr数组中查询大于1且小于6的元素，并且按照n元素对查询结果进行降序排序。
+
+int[] arr =new int[]{0,1,2,3,4,5,6,7,8,9};
+var query =from n in arr
+        where n>1 && n<6
+        orderby n descending
+        select n ;
+
+orderby子句可以包含一个或多个排序表达式，各个排序表达式使用逗号（,）分隔。
+
+2）查询表达式query。该查询表达式从arr数组中查询大于1且小于6的元素。它使用orderby子句对查询结果进行排序，且包含两个排序关键字，具体说明如下所示：n%2：按照升序排序；n：按照降序排序。
+
+注意：n%2排序关键字优先级大于n排序关键字。因此，该查询表达式的结果首先按照n%2排序关键字升序排序，然后在按照n排序关键字降序排序。
+在"orderby n%2 ascending,n descending"表达式中，第一个排序关键字后的"ascending"可以省略。因为默认排序方式为升序。
+
+3.6、group子句
+group子句用来将查询结果分组，并返回一对象序列。这些对象包含零个或更多个与改组的key值匹配的项，还可以使用group子句结束查询表达式。
+
+注意：每一个分组都不是单个元素，而是一个序列（也属于集合）。
+
+1）查询表达式query。该查询表达式从arr数组中查询大于1且小于6的元素，并且按照n%2表达式的值对查询结果进行分组。
+int[] arr =new int[]{0,1,2,3,4,5,6,7,8,9};
+var query =from n in arr
+        where n>1 && n<6
+        group n by n%2;
+query查询表达式的结果是一个序列（类型为IEnumerable<IGrouping<int,int>>），该序列的元素类型为IGrouping<int,int>.其实，该查询结果中的元素也是一个序列。
+
+2）使用两个foreach语句显示query查询表达式结果中每一个元素的值。
+
+
+
+foreach(var g in query)
+{
+        foreach(var o in g)
+        {
+              Console.WriteLine(0);
+         }
+}
+使用group子句对查询结果分组后，每一个分组都存在一个键（由key属性表示）。通过key属性可以获取每一个分组的键的值。
+
+3.7、into子句
+into子句可以用来创建一个临时标识符，将group、join或select子句的结果存储到这个标识符中。
+创建一个查询表达式query。该查询表达式从arr数组中查询大于1且小于6的元素，并且按照n%2表达式的值对查询结果进行分组。该查询表达式的具体说明如下所示：
+
+where n>1 && n<6：指定筛选大于1且小于6的元素。
+
+group n by n%2 into g: 按照n%2表达式的值对查询结果进行分组，并使用into子句创建临时标识符g。该临时标识符临时保存分组结果。
+
+from sn in g：从g标识符指定的每一个分组中查询sn元素。
+
+select sn：表示查询sn元素。
+
+int[] arr =new int[]{0,1,2,3,4,5,6,7,8,9};
+var query =from n in arr 
+        where n>1&& n<6
+        group n by n%2 into g
+        from sn in g
+上述查询表达式的查询结果包括4个元素，依次为2、4、3和5
+
+
+3.8、join子句
+join子句用来连接两个数据源，即设置两个数据源之间的关系。join子句支持以下3种常见联接方式。
+
+内部联接：元素的链接关系 必须同时满足两个数据源，类似于SQL语句中的inner join子句。
+
+分组联接：包含into子句的join子句。
+
+左外部联接：元素的链接关系必须满足联接中的左数据源，类似于SQL语句中的left join子句。
+
+内部联接：join子句的内部联接要求两个数据源都必须存在相同的值，即两个数据源都必须存在满足联接关系的元素。
+
+创建一个查询表达式query。该查询表达式使用join子句联接了arra和arrb数组，具体说明如下。
+
+创建arra数组，它包含10个元素（0~9）。
+
+创建arrb数组，它包含5个元素（0、2、4、6和8）。
+
+创建query查询。
+
+from a in arra：从arra数组中选择元素，并表示为a。
+
+where a <7: 从arra数组中选择小于7的元素
+
+join b in arrb on a equals b: 将arra和arrb数组进行联接，同时满足a和b相等的条件。其中，b元素是arrb数组中的元素。
+
+select a： 选择a元素。
+
+int[] arra =new int[] {0,1,2,3,4,5,6,7,8,9};
+int[] arrb =new int[]{0,2,4,6,8};
+var query =from a  in arra 
+        where a <7
+        join b in arrb on a equals b 
+        select a;
+上述查询表达式首先选择小于7的元素，（包括0~6），然后再喝arrb数组进行联接，并获取既包含在{0,1,2,3,4,5,6}集合中，又包含在arrb数组中的元素。最终，查询表达式的结果包含4个元素（0、2、4和6）
+
+分组联接：join子句的分组联接包含into子句的join子句的链接。它将左数据源与右数据源的元素一次匹配。左数据源的所有元素都出现在查询结果中。若在右数据源中找到匹配项，则使用匹配的数据，否则用空表示。
+

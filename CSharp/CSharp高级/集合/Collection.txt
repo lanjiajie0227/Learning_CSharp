@@ -1,1 +1,281 @@
-﻿
+﻿一、集合接口
+
+1、BCL中集合类型分为泛型集合与非泛型集合。
+
+2、非泛型集合的类和接口位于System.Collections命名空间。
+
+3、泛型集合的类和接口位于System.Collections.Generic命名空间。
+
+ICollection接口是System.Collections命名空间中非泛型集合类的基接口，
+它继承自IEnumerable接口，从IEnumerable接口继承意味着实现该接口的实现类需要实现一个枚举器方法：
+GetEnumerator，该方法返回IEnumerator类型的数据。
+
+IDictionary和IList接口继承自ICollection作为更为专用的接口，
+其中IDictionary接口是键/值对接口，它的实现如HashTable类;
+而IList是值的集合，其成员可通过索引访问，如ArrayList类，次类集合与数组相比，可以认为是可变的集合，
+优点有，长度自动增长等。
+
+IEnumerable<T>和IEnumerable是所有集合或集合接口的基接口，所有集合接口或集合都继承、实现了它。
+其中IEnumerable是最底层的接口。在非泛型集合里存放的都是System.Object类型。
+
+非泛型集合接口　　　　泛型集合接口　　　　　　　　　说明
+
+ICollection　　　　　ICollection<T>　　　定义所有集合的大小(Count)，枚举器(foreach)和同步(copyto)方法，继承自IEnumerable
+
+IList　　　　　　　　 IList<T>　　　　　　表示可按照索引单独访问的一组对象(像数组一样)
+
+IDictionary　　　　　 IDictionary<T>　　　　　表示键/值对的集合
+
+IComparer　　　　　　 IComparer<T>　　　　　　　定义类型为比较两个对象而实现的方法
+
+IEqualityComparer　　　IEqualityComparer<T>　　　　定义方法以支持对象的相等比较
+
+IEnumerable　　　　　　IEnumerable<T>　　　　　公开枚举器。实现了该接口意味着允许foreach语句循环访问集合中的元素
+
+IEnumerator　　　　　　IEnumerator<T>　　　　　支持在泛型集合上进行简单迭代
+
+
+1、IEnumerable接口就一个方法，没有属性。
+
+2、IEnumerable<T>接口也一样，也是就一个方法，没有属性。
+
+3、ICollection接口
+GetEnumerator 　　　　　　返回一个循环访问集合的枚举数。 （继承自 IEnumerable。）
+
+4、ICollection<T>
+
+5、IList继承了ICollection和IEnumerable
+
+6、IList<T>继承了ICollection<T>,IEnumerable<T>,IEnumerable
+
+7、IDictionary<TKey,TValue>接口是最底层出现的键/值对集合了,相当于值集合中的ICollection<T>
+
+8、IDictionary
+
+9、ISet<T>同样是继承自ICollection<T>,IEnumerable<T>,IEnumerable
+
+
+二、集合
+
+1、ArrayList
+
+　　ArrayList实现了IList、ICollection、IEnumerable接口。
+
+　　ArrayList与Array的名字很相似，现在来比较一下两者的异同。
+
+　　相同点：
+
+　　(1)、两者都实现了IList、ICollection、IEnumerable接口。
+
+　　(2)、两者都可以使用整数索引访问集合中的元素，包括读取和赋值，且集合中的索引都从0开始。
+
+　　不同点：
+
+　　(1)、ArrayList是集合，而Array是数组。
+
+　　(2)、ArrayList是具体类，Array是抽象类。
+
+　　(3)、数组必须在实例化时指定元素的数量，该数量一旦确定就不可以更改了，而ArrayList扩展了这一点，当实例化一个ArrayList实例时可以不指定集合元素数(有默认初始容量)，当然你也可以指定初始容量。
+
+　　(4)、获取数组的元素数时使用Length属性，而获取ArrayList集合的元素数时使用Count属性。
+
+　　(5)、数组可以有多维，而ArrayList只能是一维。
+
+来看ArrayList具体提供的功能
+
+属性　　　　　　　　　　　　　　说明
+
+Capacity 　　　　　　　　　　　  获取或设置 ArrayList 可包含的元素数。
+Count 　　　　　　　　　　　　　获取 ArrayList 中实际包含的元素数。
+IsFixedSize 　　　　　　　　　　  获取一个值，该值指示 ArrayList 是否具有固定大小。
+IsReadOnly 　　　　　　　　　　  获取一个值，该值指示 ArrayList 是否为只读。
+IsSynchronized 　　　　　　　　  获取一个值，该值指示是否同步对 ArrayList 的访问（线程安全）。
+Item 　　　　　　　　　　　　　   获取或设置指定索引处的元素。
+SyncRoot 　　　　　　　　　　　 获取可用于同步 ArrayList 访问的对象。
+
+方法
+
+Adapter 　　　　　　　　　　　　  为特定的 IList 创建 ArrayList 包装。
+Add 　　　　　　　　　　　　　　  将对象添加到 ArrayList 的结尾处。
+AddRange 　　　　　　　　　　　  将 ICollection 的元素添加到 ArrayList 的末尾。
+BinarySearch 　　　　　　　　　　已重载。 使用对分检索算法在已排序的 ArrayList 或它的一部分中查找特定元素。
+Clear 　　　　　　　　　　　　　　从 ArrayList 中移除所有元素。
+Clone 　　　　　　　　　　　　　  创建 ArrayList 的浅表副本。
+Contains 　　　　　　　　　　　　确定某元素是否在 ArrayList 中。
+CopyTo 　　　　　　　　　　　　 已重载。 将 ArrayList 或它的一部分复制到一维数组中。
+FixedSize 　　　　　　　　　　　  已重载。 返回具有固定大小的列表包装，其中的元素允许修改，但不允许添加或移除。
+GetEnumerator 　　　　　　　　  已重载。 返回循环访问 ArrayList 的枚举数。
+GetRange 　　　　　　　　　　　 返回 ArrayList，它表示源 ArrayList 中元素的子集。
+IndexOf　　　　　　　　　　　　  已重载。 返回 ArrayList 或它的一部分中某个值的第一个匹配项的从零开始的索引。
+Insert 　　　　　　　　　　　　　 将元素插入 ArrayList 的指定索引处。 可在任意位置插入。
+InsertRange 　　　　　　　　　　 将集合中的某个元素插入 ArrayList 的指定索引处。
+LastIndexOf 　　　　　　　　　　 已重载。 返回 ArrayList 或它的一部分中某个值的最后一个匹配项的从零开始的索引。
+ReadOnly 　　　　　　　　　　　  已重载。 返回只读的列表包装。
+Remove 　　　　　　　　　　　　从 ArrayList 中移除特定对象的第一个匹配项。
+RemoveAt　　　　　　　　　　    移除 ArrayList 的指定索引处的元素。
+RemoveRange 　　　　　　　　   从 ArrayList 中移除一定范围的元素。
+Repeat 　　　　　　　　　　　　  返回 ArrayList，它的元素是指定值的副本。
+Reverse 　　　　　　　　　　　　已重载。 将 ArrayList 或它的一部分中元素的顺序反转。
+SetRange 　　　　　　　　　　　 将集合中的元素复制到 ArrayList 中一定范围的元素上。
+Sort 　　　　　　　　　　　　　　已重载。 对 ArrayList 或它的一部分中的元素进行排序。
+Synchronized　　　　　　　　     已重载。 返回同步的（线程安全）列表包装。
+ToArray 　　　　　　　　　　　　已重载。 将 ArrayList 的元素复制到新数组中。
+TrimToSize 　　　　　　　　　　 将容量设置为 ArrayList 中元素的实际数目。
+
+
+
+2、非泛型集合HashTable
+
+ 　　Hashtable实现了IDictionary、ICollection以及IEnumerable接口。注意Hashtable，t是小写的。由于是非泛型集合，因此存储进去的都是object类型，不管是键还是值。
+
+　　Hashtable的要点。
+
+　　(1)、Hashtable仅有非泛型版本。
+
+　　(2)、Hashtable类中的键不允许重复，但值可以。
+
+　　(3)、Hashtable类所存储的键值对中，值可以为null，但键不允许为null。
+
+　　(4)、Hashtable不允许排序操作。
+
+
+
+3、Queue和Queue<T>
+
+　　Queue成为队列，队列是这样一种数据结构，数据有列表的一端插入，并由列表的另一端移除。就像单行道，只能从一段进，从一端出。Queue类实现了ICollection和IEnumerable接口。
+
+　　Queue的一些重要特性。
+
+　　1、先进先出
+
+　　2、可以添加null值到集合中
+
+　　3、允许集合中的元素重复
+
+　　4、Queue容量会按需自动添加
+
+　　5、Queue的等比因子是当需要更大容量时当前容量要乘以的数字，默认是2.0。
+
+　　现在列出Queue一个特性的功能
+
+成员　　　　　　　类型　　　　　　　　说明
+
+Clear　　　　　　 方法　　　　　　　　从Queue中移除所有对象，清空队列。
+
+Contains　　　　 方法　　　　　　　　确定某元素是否在Queue中
+
+Enqueue　　　　 方法　　　　　　　　将对象添加到Queue的结尾处　　入列
+
+Dequeue　　　　 方法　　　　　　　　移除并返回位于Queue开始处的对象　　出列
+
+Peek　　　　　　 方法　　　　　　　　返回位于Queue开始出的对象，但不将其移除，与出列不同，出列是会移除的
+
+
+
+4、Stack和Stack<T>
+
+　　Stack称为栈，栈和队列非常相似，只不过队列是先进先出，而栈中的数据添加和移除都在一端进行，遵守栈中的数据则后进先出。Stack类实现了ICollection和IEnumerable接口。
+
+　　Stack类的一些重要特性如下：
+
+　　1、后进先出。
+
+　　2、可以添加null值到集合中。
+
+　　3、允许集合中的元素重复。
+
+　　4、Stack的容量会按需自动增加。
+
+列出几个有特点的功能。
+
+成员　　　　　　类型　　　　　　　　说明
+
+Clear　　　　　 方法　　　　　　　　 从Stack中移除所有对象
+
+Contains　　　 方法　　　　　　　　 确定某元素是否在Stack中
+
+Push　　　　　 方法　　　　　　　　 将对象插入Stack的顶部　　入栈
+
+Pop　　　　　　方法　　　　　　　　 移除并返回Stack顶部的对象  出栈
+
+Peek　　　　　  方法　　　　　　　　 返回位于Stack顶部的对象，但不移除，注意出栈是移除的。它不移除仅仅返回。
+
+Count　　　　  属性　　　　　　　　 获取Stack中包含的元素
+
+
+
+5、SortedList与SortedList<T>
+
+SortedList类实现了IDictionary、ICollection以及IEnumerable接口。
+SortedList类与HashTable类似，也表示一个键/值对集合，可以通过键和索引对元素进行访问，
+但不同的是，也是该类的最大作用所在，就是支持基于键的排序。
+在SortedList中，键和值分别保存在一个数组中，当向Sorted添加一个元素时，
+SortedList类添加一个元素时，SortedList会首先对key进行排序，
+然后根据排序结果计算出要插入到集合中的位置索引，
+再分别将key和value插入到各自数组的指定索引位置。
+当使用foreach循环集合中的元素时，
+SortedList会将相同索引位置的key和value放进一个DictionaryEntry类型的对象，然后返回。
+
+
+6、BitArray
+
+　　BitArray类实现了一个位结构，它是一个二进制位(0和1)的集合。BitArray的值表示true或false。true表示位打开，false表示位关闭。BitArray实现了ICollection和IEnumerable接口。
+
+　　BitArray的一些特性如下：
+
+　　1、BitArray集合不支持动态调整，因此没有Add和Remove方法。
+
+　　2、若需要调整集合的大小，可通过设置属性Length的值来实现。
+
+　　3、集合中的索引从0开始。
+
+　　4、使用BitArray(int length)构造函数初始化BitArray集合后，其值均为false。
+
+　　5、BitArray集合之间支持按位“或”、“异或”、“与运算”，参与这三类运算的BitArray集合长度必须相等。否则会抛出异常。
+
+
+属性 　　　　　　　　 说明 
+
+Count 　　　　　　　 获取 BitArray 中包含的元素数。
+IsReadOnly 　　　　  获取一个值，该值指示 BitArray 是否为只读。
+IsSynchronized 　　  获取一个值，该值指示是否同步对 BitArray 的访问（线程安全）。
+Item 　　　　　　　　获取或设置 BitArray 中特定位置的位的值。
+Length 　　　　　　  获取或设置 BitArray 中元素的数目。
+SyncRoot 　　　　　 获取可用于同步 BitArray 访问的对象。
+
+ 方法　　　　　　　　说明
+
+And 　　　　　　　　对当前 BitArray 中的元素和指定的 BitArray 中的相应元素执行按位 AND 运算。
+Clone 　　　　　　　 创建 BitArray 的浅表副本。
+CopyTo 　　　　　　从目标数组的指定索引处开始将整个 BitArray 复制到兼容的一维 Array。
+Get 　　　　　　　　获取 BitArray 中特定位置处的位的值。
+GetEnumerator 　　返回循环访问 BitArray 的枚举数。
+Not 　　　　　　　　反转当前 BitArray 中的所有位值，以便将设置为 true 的元素更改为 false；将设置为 false 的元素更改为 true。
+Or 　　　　　　　　  对当前 BitArray 中的元素和指定的 BitArray 中的相应元素执行按位“或”运算。
+Set 　　　　　　　　将 BitArray 中特定位置处的位设置为指定值。
+SetAll 　　　　　　  将 BitArray 中的所有位设置为指定值。
+Xor 　　　　　　     对当前 BitArray 中的元素和指定的 BitArray 中的相应元素执行按位“异或”运算。
+
+
+三、应用场景
+ArrayList,List<T>：变长数组；
+
+HashTable,Dictionary<T,T>：频繁根据key查找value；
+
+HashSet<T>：集合运算；
+
+Queue、Queue<T>：先进先出；
+
+Stack、Stack<T>：堆栈，先进先出；
+
+SortedList、SortedList<TKey,TValue>：哈希表，要通过下标，又要通过key取值时，可选用；
+
+ListDictionary：单向链表，每次添加数据时都要遍历链表，数据量大时效率较低，数据量较大且插入频繁的情况下，不宜选用。
+
+LinkedList<T>：双向链表；
+
+HybridDictionary：未知数据量大小时，可用。
+
+SortedDictionary<TKey,TValue>：SortedList<TKey,TValue>的优化版，内部数组转平衡二叉树。
+
+BitArray：二进制运算时可选用；
