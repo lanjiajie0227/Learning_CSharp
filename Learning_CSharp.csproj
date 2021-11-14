@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CSharp\CSharpWebApi\" />
@@ -42,11 +43,15 @@
     <Content Include="CSharp\.NET框架\ASP.NET\ASP相关.txt" />
     <Content Include="CSharp\.NET框架\WPF\MVVM设计模式.txt" />
     <Content Include="CSharp\.NET框架\面试相关\面试常见问题以及答案.txt" />
-    <Content Include="CSharp\CSharp基础语法\数据类型.txt" />
+    <Content Include="CSharp\CSharp基础语法\封装、继承、多态.txt" />
+    <Content Include="CSharp\CSharp基础语法\数据类型and操作数据类型的类.txt" />
+    <Content Include="CSharp\CSharp基础语法\类和对象.txt" />
+    <Content Include="CSharp\CSharp基础语法\静态和非静态.txt" />
     <Content Include="CSharp\CSharp操作数据库\MySQL\连接MySQL.txt" />
     <Content Include="CSharp\CSharp操作数据库\SQL Server\ADO.NET.txt" />
     <Content Include="CSharp\CSharp数据结构\DataStruct.txt" />
     <Content Include="CSharp\CSharp设计模式\单例模式\单例模式.txt" />
+    <Content Include="CSharp\CSharp设计模式\简单工厂模式\简单工厂模式.txt" />
     <Content Include="CSharp\CSharp高级\Lambda和Linq\Lambda.txt" />
     <Content Include="CSharp\CSharp高级\Lambda和Linq\Linq.txt" />
     <Content Include="CSharp\CSharp高级\委托和事件\Delegate_And_Event.txt" />
@@ -58,7 +63,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharp\CSharp操作数据库\SqlHelper.cs" />
+    <Compile Include="CSharp\CSharp设计模式\单例模式\Singleton.cs" />
+    <Compile Include="CSharp\LeetCode算法\ChangeIntToRoman.cs" />
+    <Compile Include="CSharp\LeetCode算法\ChangeRomanToInt.cs" />
+    <Compile Include="CSharp\LeetCode算法\CheckUppercaseLetters.cs" />
+    <Compile Include="CSharp\LeetCode算法\huiwenshu.cs" />
+    <Compile Include="CSharp\LeetCode算法\LonggestCommonPrefix.cs" />
+    <Compile Include="CSharp\LeetCode算法\MakeFulBrackets.cs" />
+    <Compile Include="CSharp\LeetCode算法\MapSum.cs" />
+    <Compile Include="CSharp\LeetCode算法\MaxCount.cs" />
+    <Compile Include="CSharp\LeetCode算法\PhoneNumCombinations.cs" />
+    <Compile Include="CSharp\LeetCode算法\ThreeNumberSum.cs" />
     <Compile Include="CSharp\LeetCode算法\TwoSumSolution.cs" />
+    <Compile Include="CSharp\LeetCode算法\workfulBrackets.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Nito.Collections.Deque, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Nito.Collections.Deque.1.1.1\lib\net461\Nito.Collections.Deque.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.NonGeneric, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Collections.NonGeneric.4.3.0\lib\net46\System.Collections.NonGeneric.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

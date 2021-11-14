@@ -1,0 +1,33 @@
+﻿常用数值类型
+整数 int\long\short\uint\ulong\byte(无符号整数0~255)\sbyte(有符号整数-128~127)
+浮点数 float\double\decimal(货币、经济型)
+字符 char
+字符串 string/String
+布尔 bool
+
+
+StringBuilder 和 StringBuffer
+
+int和string互相转换，前提是string都是数字的字符串，否则会报错。
+int res = int.Parse(s.ToString());
+decimal = decimal.Parse(s.ToString());
+string s = res.Tostring();
+
+//字符串s转成char数组
+char[] ch = s.ToCharArray();
+
+double d;
+int i;
+//强制转换double为int
+i = (int)d;
+
+值类型--
+int/double/float/char/bool/decimal/struct(结构)/enum(枚举)
+值存储在内存的栈上
+把值作为参数传递，传递的是值本身
+
+引用类型--
+string/Array(数组)/自定义类/interface(接口)/delegate(委托)
+值存储在堆中
+把值作为参数传递，传递的是引用
+
