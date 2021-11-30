@@ -38,13 +38,13 @@ namespace Learning_CSharp.CSharp.LeetCode算法
                 {
                     string key = en.Current.Key;  //获取当前元素的key
                     int value = en.Current.Value;  //获取当前元素的value
+                    StringBuilder getPrefixFromKey = new StringBuilder();    //获取key中和prefix一样长度的字符串
                     if (prefix.Length > key.Length)   //前缀长度大于key
                     {
                         continue;
                     }
                     else if (prefix.Length < key.Length)   //前缀长度小于key
                     {
-                        if (key.StartsWith(prefix))    //字符串函数
                         {
                             res += value;
                         }

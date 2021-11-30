@@ -1,0 +1,76 @@
+﻿类是对现实世界的实体的抽象
+（所有类都需要写在名称空间中，namespace，using namespace； 表示使用该命名空间）
+对象->是类的实例化
+
+类的三大成员
+
+属性(Property)
+-->利用字段存储数据，组合起来表示类和对象当前的状态；
+方法(Method)
+-->表示类的行为或者是表示类或对象能做什么事；
+事件(Event)
+-->类或对象通知其他类或对象的机制，为C#特有
+
+某些特殊类或对象在成员方面侧重点不同
+模型类或对象重在属性，如EF框架(Entity Framework)
+工具类或对象重在方法，如Math类，Console
+通知类或对象重在事件，如各种Timer
+
+new关键字用来创建类的实例， 比如人这个类
+Person man = new Person();
+上述代码表示创建了Person类的实例对象man，
+man这个对象具有Person类的属性，可以调用Person类中的方法
+引用变量与实例：引用变量=实例
+
+Person man = new Person();
+man.name = "Jack";  //属性值
+man.Sleep();   //调用方法
+
+类可以继承，子类只能有一个父类(只能继承一个类)，父类可以有多个子类或者孙子类
+class Father
+{
+	//字段
+	private string name;
+	private string address;
+	//属性
+	public string Name{get;set;}
+	public string Address{get;set;}
+
+	//方法
+	public void eat()
+	{
+		Console.WriteLine("I can eat");
+	}
+
+	//类可以自动创建构造函数，也可以手动自己创建
+	//构造函数
+	public Father(string name,string address)
+	{
+		this.Name = name;
+		this.Address = address;
+	}
+	
+}
+
+Son类继承了Father类，拥有了Father类的属性和方法，还可以有自己的属性和方法
+
+class Son : Father
+{
+	//子类字段
+	private string school;
+	private string weight;
+
+	//子类属性
+	public string School{get;set;}
+	public string Weight{get;set;}
+
+	//子类方法
+	public void sleep()
+	{
+		Console.WriteLine("I want to sleep!!!");
+	}
+
+	//Son类继承Father类时要实现Father自定义的构造函数
+	public Son(string name,string address):base(name,address){}
+}
+
